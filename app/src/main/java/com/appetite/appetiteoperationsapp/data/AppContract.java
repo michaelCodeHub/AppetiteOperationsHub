@@ -70,6 +70,7 @@ public final class AppContract
         public final static String SNO = "sno";
         public final static String ID = "_id";
         public final static String TASKID = "taskid";
+        public final static String CLIENTID = "clientid";
         public final static String NAME = "name";
         public final static String CLIENT_DEADLINE = "client_deadline";
         public final static String DESCRIPTION = "description";

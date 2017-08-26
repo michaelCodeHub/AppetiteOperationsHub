@@ -55,16 +55,16 @@ public class AppDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("CREATE TABLE " + AppContract.UserEntry.TABLE_NAME + "(" + AppContract.UserEntry.SNO
-                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.UserEntry.ID
+        db.execSQL("CREATE TABLE " + AppContract.UserEntry.TABLE_NAME + "(" + AppContract.UserEntry.ID
+                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.UserEntry.SNO
                 + " INTEGER ,"+ AppContract.UserEntry.USERID
                 + " TEXT ,"+ AppContract.UserEntry.TYPE
                 + " INT ,"+ AppContract.UserEntry.NAME
                 + " TEXT  , UNIQUE("+AppContract.UserEntry.USERID
                 +"))");
 
-        db.execSQL("CREATE TABLE " + AppContract.ClientsEntry.TABLE_NAME + "(" + AppContract.ClientsEntry.SNO
-                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.ClientsEntry.ID
+        db.execSQL("CREATE TABLE " + AppContract.ClientsEntry.TABLE_NAME + "(" + AppContract.ClientsEntry.ID
+                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.ClientsEntry.SNO
                 + " INTEGER ,"+ AppContract.ClientsEntry.CLIENTID
                 + " TEXT ,"+ AppContract.ClientsEntry.NAME
                 + " TEXT ,"+ AppContract.ClientsEntry.ADDRESS
@@ -72,17 +72,18 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 + " TEXT  , UNIQUE("+AppContract.ClientsEntry.CLIENTID
                 +"))");
 
-        db.execSQL("CREATE TABLE " + AppContract.TaskEntry.TABLE_NAME + "(" + AppContract.TaskEntry.SNO
-                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.TaskEntry.ID
+        db.execSQL("CREATE TABLE " + AppContract.TaskEntry.TABLE_NAME + "(" + AppContract.TaskEntry.ID
+                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.TaskEntry.SNO
                 + " INTEGER ,"+ AppContract.TaskEntry.TASKID
+                + " TEXT ,"+ AppContract.TaskEntry.CLIENTID
                 + " TEXT ,"+ AppContract.TaskEntry.NAME
                 + " TEXT ,"+ AppContract.TaskEntry.CLIENT_DEADLINE
                 + " TEXT ,"+ AppContract.TaskEntry.DESCRIPTION
                 + " TEXT  , UNIQUE("+AppContract.TaskEntry.TASKID
                 +"))");
 
-        db.execSQL("CREATE TABLE " + AppContract.TaskProgressEntry.TABLE_NAME + "(" + AppContract.TaskProgressEntry.SNO
-                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.TaskProgressEntry.ID
+        db.execSQL("CREATE TABLE " + AppContract.TaskProgressEntry.TABLE_NAME + "(" + AppContract.TaskProgressEntry.ID
+                + " INTEGER PRIMARY KEY   AUTOINCREMENT,"+ AppContract.TaskProgressEntry.SNO
                 + " INTEGER ,"+ AppContract.TaskProgressEntry.TASKID
                 + " TEXT ,"+ AppContract.TaskProgressEntry.STATUS
                 + " TEXT ,"+ AppContract.TaskProgressEntry.DEADLINE
