@@ -23,6 +23,13 @@
         <activity android:name=".Login"
         android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity android:name=".TaskDetails"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <activity android:name=".AssignTask"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <provider
             android:authorities="com.appetite.appetiteoperationsapp"
             android:name=".data.AppProvider"

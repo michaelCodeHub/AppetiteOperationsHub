@@ -20,6 +20,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
+import com.appetite.appetiteoperationsapp.Database.AppContract;
+
 import java.io.File;
 
 /**
@@ -79,7 +81,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
                 + " TEXT ,"+ AppContract.TaskEntry.NAME
                 + " TEXT ,"+ AppContract.TaskEntry.CLIENT_DEADLINE
                 + " TEXT ,"+ AppContract.TaskEntry.DESCRIPTION
-                + " TEXT  , UNIQUE("+AppContract.TaskEntry.TASKID
+                + " TEXT ,"+ AppContract.TaskEntry.STATUS
+                + " INTEGER  , UNIQUE("+AppContract.TaskEntry.TASKID
                 +"))");
 
         db.execSQL("CREATE TABLE " + AppContract.TaskProgressEntry.TABLE_NAME + "(" + AppContract.TaskProgressEntry.ID

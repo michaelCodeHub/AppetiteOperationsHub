@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,10 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appetite.appetiteoperationsapp.data.AppContract;
+import com.appetite.appetiteoperationsapp.Database.AppContract;
+import com.appetite.appetiteoperationsapp.Database.Database;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -41,11 +39,14 @@ public class Login extends AppCompatActivity
 {
     String username,password;
     private CustomProgressDialog progressDialog;
+    Database database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        database = new Database(getApplicationContext());
 
         new Sansation().overrideFonts(getApplicationContext(),findViewById(R.id.bottonLayout));
 
@@ -104,6 +105,7 @@ public class Login extends AppCompatActivity
                 else
                 {
                     App.editor.putString("userid",x).commit();
+                    App.editor.putBoolean("login",true).commit();
                     getJson();
                 }
             }
@@ -145,6 +147,9 @@ public class Login extends AppCompatActivity
                 {
                     Log.e("json",x);
                     try {
+
+                        database.open();
+
                         JSONObject jsonObject = new JSONObject(x);
                         JSONArray usersArray = jsonObject.getJSONArray("users");
                         for (int i = 0; i < usersArray.length(); i++) {
@@ -156,7 +161,9 @@ public class Login extends AppCompatActivity
                             cv.put(AppContract.UserEntry.TYPE , usersObject.getString("type"));
                             cv.put(AppContract.UserEntry.NAME , usersObject.getString("name"));
 
-                            getContentResolver().insert(AppContract.UserEntry.CONTENT_URI , cv);
+                            database.addUser(cv);
+
+//                            getContentResolver().insert(AppContract.UserEntry.CONTENT_URI , cv);
                         }
 
                         JSONArray clientsArray = jsonObject.getJSONArray("clients");
@@ -170,10 +177,11 @@ public class Login extends AppCompatActivity
                             cv.put(AppContract.ClientsEntry.ADDRESS , clientsObject.getString("location"));
                             cv.put(AppContract.ClientsEntry.NUMBER , clientsObject.getString("contact"));
 
-                            getContentResolver().insert(AppContract.ClientsEntry.CONTENT_URI , cv);
+                            database.addClient(cv);
+//                            getContentResolver().insert(AppContract.ClientsEntry.CONTENT_URI , cv);
                         }
 
-                        JSONArray tasksArray = jsonObject.getJSONArray("clients");
+                        JSONArray tasksArray = jsonObject.getJSONArray("tasks");
                         for (int i = 0; i < tasksArray.length(); i++) {
                             JSONObject tasksObject = tasksArray.getJSONObject(i);
 
@@ -184,25 +192,31 @@ public class Login extends AppCompatActivity
                             cv.put(AppContract.TaskEntry.CLIENTID , tasksObject.getString("clientid"));
                             cv.put(AppContract.TaskEntry.CLIENT_DEADLINE , tasksObject.getString("deadline"));
                             cv.put(AppContract.TaskEntry.DESCRIPTION , tasksObject.getString("description"));
+                            cv.put(AppContract.TaskEntry.STATUS , tasksObject.getString("status"));
 
-                            getContentResolver().insert(AppContract.TaskEntry.CONTENT_URI , cv);
+                            database.addTask(cv);
+//                            getContentResolver().insert(AppContract.TaskEntry.CONTENT_URI , cv);
                         }
 
 
-//                        JSONArray taskProgressArray = jsonObject.getJSONArray("clients");
-//                        for (int i = 0; i < taskProgressArray.length(); i++) {
-//                            JSONObject taskProgressObject = taskProgressArray.getJSONObject(i);
-//
-//                            ContentValues cv = new ContentValues();
-//                            cv.put(AppContract.TaskProgressEntry.SNO , taskProgressObject.getString("sno"));
-//                            cv.put(AppContract.TaskProgressEntry.NAME , taskProgressObject.getString("tasktitle"));
-//                            cv.put(AppContract.TaskProgressEntry.TASKID , taskProgressObject.getString("taskid"));
-//                            cv.put(AppContract.TaskProgressEntry.CLIENTID , taskProgressObject.getString("clientid"));
-//                            cv.put(AppContract.TaskProgressEntry.CLIENT_DEADLINE , taskProgressObject.getString("deadline"));
-//                            cv.put(AppContract.TaskProgressEntry.DESCRIPTION , taskProgressObject.getString("description"));
-//
-//                            getContentResolver().insert(AppContract.TaskEntry.CONTENT_URI , cv);
-//                        }
+                        JSONArray taskProgressArray = jsonObject.getJSONArray("taskprogress");
+                        for (int i = 0; i < taskProgressArray.length(); i++) {
+                            JSONObject taskProgressObject = taskProgressArray.getJSONObject(i);
+
+                            ContentValues cv = new ContentValues();
+                            cv.put(AppContract.TaskProgressEntry.SNO , taskProgressObject.getString("sno"));
+                            cv.put(AppContract.TaskProgressEntry.TASKID , taskProgressObject.getString("taskid"));
+                            cv.put(AppContract.TaskProgressEntry.STATUS , taskProgressObject.getString("status"));
+                            cv.put(AppContract.TaskProgressEntry.START_TIME , taskProgressObject.getString("starttime"));
+                            cv.put(AppContract.TaskProgressEntry.END_TIME , taskProgressObject.getString("finishtime"));
+                            cv.put(AppContract.TaskProgressEntry.DEADLINE , taskProgressObject.getString("deadline"));
+                            cv.put(AppContract.TaskProgressEntry.EMPLOYEE , taskProgressObject.getString("employeeid"));
+
+                            database.addTaskProgress(cv);
+
+//                            getContentResolver().insert(AppContract.TaskProgressEntry.CONTENT_URI , cv);
+                        }
+                        database.open();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -210,7 +224,7 @@ public class Login extends AppCompatActivity
                     }
                 }
                 progressDialog.dismiss();
-//                startActivity(new Intent(Login.this,Home.class));
+                startActivity(new Intent(Login.this,Home.class));
             }
         });
     }

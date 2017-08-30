@@ -11,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.appetite.appetiteoperationsapp.Database.AppContract;
+
 /**
  * {@link ContentProvider} for Pets app.
  */

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.appetite.appetiteoperationsapp.data;
+package com.appetite.appetiteoperationsapp.Database;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -74,6 +74,7 @@ public final class AppContract
         public final static String NAME = "name";
         public final static String CLIENT_DEADLINE = "client_deadline";
         public final static String DESCRIPTION = "description";
+        public final static String STATUS = "status";
     }
 
     public static final class TaskProgressEntry implements BaseColumns {

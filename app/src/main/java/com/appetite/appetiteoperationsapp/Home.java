@@ -45,11 +45,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         new Sansation().overrideFonts(getApplicationContext() , findViewById(R.id.textView8));
 
-//        if(!App.shared.getBoolean("login" , false))
-//        {
-//            startActivity(new Intent(Home.this  , Login.class));
-//            finish();
-//        }
+        if(!App.shared.getBoolean("login" , false))
+        {
+            startActivity(new Intent(Home.this  , Login.class));
+            finish();
+        }
 
         Window window = getWindow();
 
@@ -97,13 +97,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public Fragment getItem(int position) {
                 switch (position % 3) {
                     case 0:
-                        return Fragment1.newInstance();
+                        return NewTaskFragmen.newInstance();
                     case 1:
-                        return Fragment1.newInstance();
+                        return AssignedTaskFragment.newInstance();
                     case 2:
-                        return Fragment1.newInstance();
+                        return CompletedTaskFragment.newInstance();
                     default:
-                        return Fragment1.newInstance();
+                        return NewTaskFragmen.newInstance();
                 }
             }
 
